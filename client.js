@@ -15,6 +15,7 @@ $(document).ready(function(){ // Waits for the DOM to be completely loaded
   '<td>' + idNumber +'</td>' +
   '<td>' + jobTitle +'</td>' +
   '<td>' + annualSalary + '</td>' +
+  '<td><button class="deleteEmployeeButton">Delete ' + firstName + '</button></td>' +
   '</tr>'); // .append expects a string.
 
 // Add monthly salary expenses to the DOM
@@ -22,8 +23,14 @@ var newEmployeeMonthlyExpenses = annualSalary / 12; // Takes annual salary and d
 var previousSalaryTotal = $('#monthlyExpenses').text(); // This gets the currently monthly expenses from the DOM. ".text" is used for different elements, not input box values. ".text" with empty parameters grabs the value of that text.
 var totalMonthlyExpenses = parseFloat(previousSalaryTotal) + newEmployeeMonthlyExpenses; // parseFloat turns a string into a number.
 $('#monthlyExpenses').text(totalMonthlyExpenses); // if you pass something into .text, you are replacing that item with the variable value
+  });
 
-});
+
+$('#employeeTableBody').on('click', '.deleteEmployeeButton', function() { //You need the specifier here because the delete button is being dynamically created. You need to tie this function to something that already exists.
+    console.log('Delete button was clicked!');
+    console.log($(this));
+    $(this).parent().parent().remove();
+  });
 });
 
-//If things aren't working, test with console log. 
+//If things aren't working, test with console log.
