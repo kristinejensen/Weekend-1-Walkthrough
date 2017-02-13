@@ -15,7 +15,7 @@ $(document).ready(function(){ // Waits for the DOM to be completely loaded
   '<td>' + idNumber +'</td>' +
   '<td>' + jobTitle +'</td>' +
   '<td>' + annualSalary + '</td>' +
-  '<td><button class="deleteEmployeeButton">Delete ' + firstName + '</button></td>' +
+  '<td><button class="deleteEmployeeButton" data-salary="' + annualSalary + '">Delete ' + firstName + '</button></td>' + // "data-"" is an element that lets you store data in an element. The data doesn't show up on the page (visually).
   '</tr>'); // .append expects a string.
 
 // Add monthly salary expenses to the DOM
@@ -24,18 +24,20 @@ var previousSalaryTotal = $('#monthlyExpenses').text(); // This gets the current
 var totalMonthlyExpenses = parseFloat(previousSalaryTotal) + newEmployeeMonthlyExpenses; // parseFloat turns a string into a number.
 $('#monthlyExpenses').text(totalMonthlyExpenses); // if you pass something into .text, you are replacing that item with the variable value
 
-
 // Clear out input boxes
 $('.employeeFormInput').val('');
 
-  });
-
-
-
+});
 
 // Adding lisetner for clicking delete buttons
-$('#employeeTableBody').on('click', '.deleteEmployeeButton', function() { //You need the specifier here because the delete button is being dynamically created. You need to tie this function to something that already exists.
-    $(this).parent().parent().remove(); // Selecting the row with .parent() functions that I want to delete. 
+$('#employeeTableBody').on('click', '.deleteEmployeeButton', function(){ //This listener refers to the button. You need the specifier here because the delete button is being dynamically created. You need to tie this function to something that already exists.
+
+    var deletedEmployeeSalary = $(this).data('salary');  // Removing employee salary from total. If someone adds a new column, it will still pull the salary data.
+    var deletedEmployeeMonthlyExpenses = deletedEmployeeSalary / 12; // Converts string to number by type coercion.
+    var previousMonthlyExpenses = $('#monthlyExpenses').text();
+    var newTotalMonthlyExpenses = previousMonthlyExpenses - deletedEmployeeMonthlyExpenses;
+    $('#monthlyExpenses').text(newTotalMonthlyExpenses); // Changing the value of #monthlyExpenses span
+    $(this).parent().parent().remove(); // Selecting the row with .parent() functions that I want to delete.
   });
 });
 
