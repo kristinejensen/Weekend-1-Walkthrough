@@ -1,5 +1,5 @@
 $(document).ready(function(){ // Waits for the DOM to be completely loaded
-  $('#submitNewEmployee').on('click', function() { // Event listener -- listening for a click. Button is not created dynamically, so it doesn't need a specifier.
+  $('#submitNewEmployee').on('click', function(){ // Event listener -- listening for a click. Button is not created dynamically, so it doesn't need a specifier.
 
   // Declaring variables and retrieving values from input boxes
   var firstName = $('#firstName').val();
@@ -23,13 +23,19 @@ var newEmployeeMonthlyExpenses = annualSalary / 12; // Takes annual salary and d
 var previousSalaryTotal = $('#monthlyExpenses').text(); // This gets the currently monthly expenses from the DOM. ".text" is used for different elements, not input box values. ".text" with empty parameters grabs the value of that text.
 var totalMonthlyExpenses = parseFloat(previousSalaryTotal) + newEmployeeMonthlyExpenses; // parseFloat turns a string into a number.
 $('#monthlyExpenses').text(totalMonthlyExpenses); // if you pass something into .text, you are replacing that item with the variable value
+
+
+// Clear out input boxes
+$('.employeeFormInput').val('');
+
   });
 
 
+
+
+// Adding lisetner for clicking delete buttons
 $('#employeeTableBody').on('click', '.deleteEmployeeButton', function() { //You need the specifier here because the delete button is being dynamically created. You need to tie this function to something that already exists.
-    console.log('Delete button was clicked!');
-    console.log($(this));
-    $(this).parent().parent().remove();
+    $(this).parent().parent().remove(); // Selecting the row with .parent() functions that I want to delete. 
   });
 });
 
