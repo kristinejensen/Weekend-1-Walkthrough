@@ -1,20 +1,30 @@
 $(document).ready(function(){ // Waits for the DOM to be completely loaded
-  $('#submitNewEmployee').on('click', function(){ // Event listener -- listening for a click. Button is not created dynamically, so it doesn't need a specifier.
+  $('form').on('submit', function(event){ // "Submit is an event." "Submit" allows you to hit the return key and create a form. Typing enter will trigger the event, in addition to pushing submit. Event refers to the current event. Event listener -- listening for a button clicks inside the form. Button is not created dynamically, so it doesn't need a specifier.
+  event.preventDefault(); // Do not bring us to a new page.
 
-  // Declaring variables and retrieving values from input boxes
-  var firstName = $('#firstName').val();
-  var lastName = $('#lastName').val();
-  var idNumber = $('#idNumber').val();
-  var jobTitle = $('#jobTitle').val();
-  var annualSalary = $('#annualSalary').val();
+  console.log('form values', $(this).serializeArray()); // "This" refers to the form. Forms have serialized arrays -- their special function. .serializeArray creates an array of input values, which are converted to objects. Objects have two properties: name and value. {name(name of input): 'firstName', value: 'Kris'}. You are locked into these two properties with .serializeArray.
+
+  var submissionArray = $(this).serializeArray();
+  var newEmployeeObject = {}; // {firstName: 'Kris', lastName: 'Jensen'} This is what we want to create.
+  submissionArray.forEach(function(inputFieldObject) { // The forEach loop calls the function for us. forEach is accomplishing the same thing as a for loop.
+    // first time through, newEmployeeObject is an empty object
+    newEmployeeObject[inputFieldObject.name] = inputFieldObject.value; // We use bracket notation becuase this is going to change. Bracket notation tells the computer you are looking for a property.
+    // newEmployeeObject.firstName = Kris
+    //after code runs newEmployeeObject is {firstName: 'Kris', }
+    // second time through newEmployeeObject is {firstName: 'Kris', lastName: 'Jensen'}
+  });
+
+  console.log('New Employee Object: ', newEmployeeObject);
+
+
 
   // Adds new employee row to DOM
   $('#employeeTableBody').append('<tr>' +
-  '<td>' + firstName + '</td>' +
-  '<td>' + lastName + '</td>' +
-  '<td>' + idNumber +'</td>' +
-  '<td>' + jobTitle +'</td>' +
-  '<td>' + annualSalary + '</td>' +
+  '<td>' + newEmployeeObject.firstName + '</td>' + // updated to accept properties from objects
+  '<td>' + newEmployeeObject.lastName + '</td>' +
+  '<td>' + newEmployeeObject.idNumber +'</td>' +
+  '<td>' + newEmployeeObject.jobTitle +'</td>' +
+  '<td>' + newEmployeeObject.annualSalary + '</td>' +
   '<td><button class="deleteEmployeeButton" data-salary="' + annualSalary + '">Delete ' + firstName + '</button></td>' + // "data-"" is an element that lets you store data in an element. The data doesn't show up on the page (visually).
   '</tr>'); // .append expects a string.
 
